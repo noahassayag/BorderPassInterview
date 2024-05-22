@@ -22,11 +22,18 @@ const Questionnaire: React.FC = () => {
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadQuestions = async () => {
-      const questions = await fetchQuestions();
-      setQuestions(questions);
+      try {
+        const questions = await fetchQuestions();
+        setQuestions(questions);
+      } catch (error) {
+        setError("Failed to load questions. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
     };
     loadQuestions();
   }, []);
@@ -115,6 +122,10 @@ const Questionnaire: React.FC = () => {
     );
   };
 
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
   if (isSubmitted) {
     return (
       <Container className="mt-4">
@@ -136,13 +147,15 @@ const Questionnaire: React.FC = () => {
 
   return (
     <Container className="mt-4">
-      {questions.length > 0 && (
+      {questions.length > 0 ? (
         <div className="text-center">
           <QuestionComponent
             question={currentQuestion}
             onAnswer={handleAnswer}
           />
         </div>
+      ) : (
+        <p>No questions available.</p>
       )}
       {error && <Alert color="danger">{error}</Alert>}
       <div className="d-flex justify-content-between mt-4">
