@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "text": "What is your name?",
+    "type": "text",
+    "isRequired": true
+  },
+  {
+    "id": 2,
+    "text": "Do you like programming?",
+    "type": "checkbox",
+    "options": ["Yes", "No"],
+    "isRequired": false
+  },
+  {
+    "id": 3,
+    "text": "What is your favorite language?",
+    "type": "dropdown",
+    "options": ["JavaScript", "Python", "Java", "C++"],
+    "isRequired": true
+  }
+]
