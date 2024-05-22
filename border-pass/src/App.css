@@ -1,4 +1,14 @@
 .App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.footer {
+  margin-top: auto;
+  padding: 1rem 0;
+  background-color: #343a40;
+  color: white;
   text-align: center;
 }
 

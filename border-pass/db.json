@@ -1,0 +1,131 @@
+{
+  "questions": [
+    {
+      "id": "1",
+      "text": "What is your name?",
+      "type": "text",
+      "isRequired": true
+    },
+    {
+      "id": "2",
+      "text": "Do you like programming?",
+      "type": "checkbox",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "isRequired": false
+    },
+    {
+      "id": "3",
+      "text": "What is your favorite language?",
+      "type": "dropdown",
+      "options": [
+        "JavaScript",
+        "Python",
+        "Java",
+        "C++"
+      ],
+      "isRequired": true
+    },
+    {
+      "id": "4",
+      "text": "How many years of experience do you have?",
+      "type": "text",
+      "isRequired": true
+    },
+    {
+      "id": "5",
+      "text": "Which technologies are you familiar with?",
+      "type": "checkbox",
+      "options": [
+        "React",
+        "Node.js",
+        "Django",
+        "Flask",
+        "Spring Boot"
+      ],
+      "isRequired": false
+    },
+    {
+      "id": "6",
+      "text": "What is your preferred working environment?",
+      "type": "dropdown",
+      "options": [
+        "Remote",
+        "In-office",
+        "Hybrid"
+      ],
+      "isRequired": true
+    }
+  ],
+  "submit": [
+    {
+      "id": "4a5d",
+      "answers": [
+        {
+          "questionId": "1",
+          "answer": "Noah"
+        },
+        {
+          "questionId": "2",
+          "answer": [
+            "Yes"
+          ]
+        },
+        {
+          "questionId": "3",
+          "answer": "Java"
+        },
+        {
+          "questionId": "4",
+          "answer": "2"
+        },
+        {
+          "questionId": "5",
+          "answer": [
+            "React",
+            "Node.js",
+            "Spring Boot"
+          ]
+        },
+        {
+          "questionId": "6",
+          "answer": "Hybrid"
+        }
+      ]
+    },
+    {
+      "id": "8f81",
+      "answers": [
+        {
+          "questionId": "1",
+          "answer": "Vicky"
+        },
+        {
+          "questionId": "2",
+          "answer": []
+        },
+        {
+          "questionId": "3",
+          "answer": "C++"
+        },
+        {
+          "questionId": "4",
+          "answer": "5"
+        },
+        {
+          "questionId": "5",
+          "answer": [
+            "Node.js",
+            "React"
+          ]
+        },
+        {
+          "questionId": "6",
+          "answer": "Hybrid"
+        }
+      ]
+    }
+  ]
+}

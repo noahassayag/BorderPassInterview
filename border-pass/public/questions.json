@@ -18,5 +18,25 @@
     "type": "dropdown",
     "options": ["JavaScript", "Python", "Java", "C++"],
     "isRequired": true
+  },
+  {
+    "id": 4,
+    "text": "How many years of experience do you have?",
+    "type": "text",
+    "isRequired": true
+  },
+  {
+    "id": 5,
+    "text": "Which technologies are you familiar with?",
+    "type": "checkbox",
+    "options": ["React", "Node.js", "Django", "Flask", "Spring Boot"],
+    "isRequired": false
+  },
+  {
+    "id": 6,
+    "text": "What is your preferred working environment?",
+    "type": "dropdown",
+    "options": ["Remote", "In-office", "Hybrid"],
+    "isRequired": true
   }
 ]

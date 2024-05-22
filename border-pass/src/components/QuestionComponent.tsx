@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Question, Answer } from "../types";
+import { Form, FormGroup, Label, Input } from "reactstrap";
 
 interface QuestionComponentProps {
   question: Question;
@@ -40,29 +41,42 @@ const QuestionComponent: React.FC<QuestionComponentProps> = ({
   };
 
   return (
-    <div>
-      <h2>{question.text}</h2>
-      {question.type === "text" && (
-        <input type="text" onChange={handleChange} />
-      )}
-      {question.type === "checkbox" &&
-        question.options &&
-        question.options.map((option, index) => (
-          <label key={index}>
-            <input type="checkbox" value={option} onChange={handleChange} />
-            {option}
-          </label>
-        ))}
-      {question.type === "dropdown" && question.options && (
-        <select onChange={handleChange}>
-          {question.options.map((option, index) => (
-            <option key={index} value={option}>
-              {option}
-            </option>
+    <Form>
+      <FormGroup>
+        <Label for={`question-${question.id}`}>{question.text}</Label>
+        {question.type === "text" && (
+          <Input
+            type="text"
+            id={`question-${question.id}`}
+            onChange={handleChange}
+            placeholder="Enter your answer"
+          />
+        )}
+        {question.type === "checkbox" &&
+          question.options &&
+          question.options.map((option, index) => (
+            <FormGroup check key={index}>
+              <Label check>
+                <Input type="checkbox" value={option} onChange={handleChange} />{" "}
+                {option}
+              </Label>
+            </FormGroup>
           ))}
-        </select>
-      )}
-    </div>
+        {question.type === "dropdown" && question.options && (
+          <Input
+            type="select"
+            id={`question-${question.id}`}
+            onChange={handleChange}
+          >
+            {question.options.map((option, index) => (
+              <option key={index} value={option}>
+                {option}
+              </option>
+            ))}
+          </Input>
+        )}
+      </FormGroup>
+    </Form>
   );
 };
 
