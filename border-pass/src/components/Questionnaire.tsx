@@ -23,6 +23,8 @@ const Questionnaire: React.FC = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [optionalQuestionAnswered, setOptionalQuestionAnswered] =
+    useState(false);
 
   useEffect(() => {
     const loadQuestions = async () => {
@@ -40,15 +42,28 @@ const Questionnaire: React.FC = () => {
 
   const handleNext = () => {
     const currentQuestion = questions[currentQuestionIndex];
-    if (
-      currentQuestion.isRequired &&
-      !answers.find((a) => a.questionId === currentQuestion.id)
-    ) {
+    const currentAnswer = answers.find(
+      (a) => a.questionId === currentQuestion.id
+    );
+
+    if (currentQuestion.isRequired && !currentAnswer) {
       setError("This question is required. Please provide an answer.");
     } else {
       setError(null);
-      if (currentQuestionIndex < questions.length - 1) {
-        setCurrentQuestionIndex(currentQuestionIndex + 1);
+      if (currentQuestion.type === "email") {
+        if (
+          currentAnswer &&
+          /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(currentAnswer.answer as string)
+        ) {
+          setCurrentQuestionIndex(currentQuestionIndex + 1);
+        } else {
+          setError("Please enter a valid email address.");
+        }
+      } else {
+        if (currentQuestionIndex < questions.length - 1) {
+          setCurrentQuestionIndex(currentQuestionIndex + 1);
+          setOptionalQuestionAnswered(false);
+        }
       }
     }
   };
@@ -57,14 +72,15 @@ const Questionnaire: React.FC = () => {
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
       setError(null);
+      setOptionalQuestionAnswered(false);
     }
   };
 
   const handleSkip = () => {
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setError(null);
-    }
+    // Move to the next question without saving the answer
+    setCurrentQuestionIndex(currentQuestionIndex + 1);
+    setError(null);
+    setOptionalQuestionAnswered(false);
   };
 
   const handleAnswer = (answer: Answer) => {
@@ -79,6 +95,10 @@ const Questionnaire: React.FC = () => {
       }
       return [...prevAnswers, answer];
     });
+
+    if (!questions[currentQuestionIndex].isRequired) {
+      setOptionalQuestionAnswered(true);
+    }
   };
 
   const handleSubmit = async () => {
@@ -144,6 +164,9 @@ const Questionnaire: React.FC = () => {
   }
 
   const currentQuestion = questions[currentQuestionIndex];
+  const currentAnswer = answers.find(
+    (a) => a.questionId === currentQuestion.id
+  );
 
   return (
     <Container className="mt-4">
@@ -152,6 +175,7 @@ const Questionnaire: React.FC = () => {
           <QuestionComponent
             question={currentQuestion}
             onAnswer={handleAnswer}
+            existingAnswer={currentAnswer}
           />
         </div>
       ) : (
@@ -173,7 +197,13 @@ const Questionnaire: React.FC = () => {
                 Skip
               </Button>
             )}
-            <Button color="primary" onClick={handleNext}>
+            <Button
+              color="primary"
+              onClick={handleNext}
+              disabled={
+                !currentQuestion.isRequired && !optionalQuestionAnswered
+              }
+            >
               Next
             </Button>
           </div>

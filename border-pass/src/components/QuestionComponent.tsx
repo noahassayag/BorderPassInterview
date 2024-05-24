@@ -5,19 +5,29 @@ import { Form, FormGroup, Label, Input } from "reactstrap";
 interface QuestionComponentProps {
   question: Question;
   onAnswer: (answer: Answer) => void;
+  existingAnswer?: Answer;
 }
 
 const QuestionComponent: React.FC<QuestionComponentProps> = ({
   question,
   onAnswer,
+  existingAnswer,
 }) => {
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  const [selectedOptions, setSelectedOptions] = useState<string[]>(
+    (existingAnswer?.answer as string[]) || []
+  );
+
+  const [textInput, setTextInput] = useState<string>(
+    (existingAnswer?.answer as string) || ""
+  );
 
   useEffect(() => {
     if (question.type === "checkbox") {
-      setSelectedOptions([]);
+      setSelectedOptions((existingAnswer?.answer as string[]) || []);
+    } else if (question.type === "text" || question.type === "email") {
+      setTextInput((existingAnswer?.answer as string) || "");
     }
-  }, [question]);
+  }, [question, existingAnswer]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -34,9 +44,11 @@ const QuestionComponent: React.FC<QuestionComponentProps> = ({
       setSelectedOptions(value as string[]);
     } else if (e.target instanceof HTMLInputElement) {
       value = e.target.value;
+      setTextInput(value);
     } else if (e.target instanceof HTMLSelectElement) {
       value = e.target.value;
     }
+
     onAnswer({ questionId: question.id, answer: value });
   };
 
@@ -48,6 +60,7 @@ const QuestionComponent: React.FC<QuestionComponentProps> = ({
           <Input
             type="text"
             id={`question-${question.id}`}
+            value={textInput}
             onChange={handleChange}
             placeholder="Enter your answer"
           />
@@ -57,7 +70,12 @@ const QuestionComponent: React.FC<QuestionComponentProps> = ({
           question.options.map((option, index) => (
             <FormGroup check key={index}>
               <Label check>
-                <Input type="checkbox" value={option} onChange={handleChange} />{" "}
+                <Input
+                  type="checkbox"
+                  value={option}
+                  checked={selectedOptions.includes(option)}
+                  onChange={handleChange}
+                />{" "}
                 {option}
               </Label>
             </FormGroup>
@@ -66,6 +84,7 @@ const QuestionComponent: React.FC<QuestionComponentProps> = ({
           <Input
             type="select"
             id={`question-${question.id}`}
+            value={textInput}
             onChange={handleChange}
           >
             {question.options.map((option, index) => (
@@ -74,6 +93,15 @@ const QuestionComponent: React.FC<QuestionComponentProps> = ({
               </option>
             ))}
           </Input>
+        )}
+        {question.type === "email" && (
+          <Input
+            type="email"
+            id={`question-${question.id}`}
+            value={textInput}
+            onChange={handleChange}
+            placeholder="Enter your email"
+          />
         )}
       </FormGroup>
     </Form>
